@@ -19,9 +19,15 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Start SUT
+      - name: Start MockServer
         run: |
-          java -jar ./artifacts/app-card-delivery.jar &
+          javac MockServer.java
+          java MockServer &
+
+      - name: Wait for server
+        run: |
+          sleep 5
+          curl -I http://localhost:9999
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew

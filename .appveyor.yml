@@ -3,7 +3,8 @@ image: Ubuntu
 stack: jdk 11
 
 install:
-  - java -jar ./artifacts/app-card-delivery.jar &
+  - javac MockServer.java
+  - java MockServer &
 
 build_script:
   - ./gradlew test --info -Dselenide.headless=true
