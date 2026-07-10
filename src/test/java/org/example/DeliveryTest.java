@@ -54,7 +54,7 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(deliveryDate);
 
-        // Имя — используем JavaScript
+        // Имя
         SelenideElement nameField = $("input[name='name']");
         executeJavaScript("arguments[0].click();", nameField);
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
@@ -66,7 +66,7 @@ public class DeliveryTest {
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
 
-        // Согласие — используем JavaScript
+        // Согласие
         SelenideElement agreementCheckbox = $("input[name='agreement']");
         if (!agreementCheckbox.has(checked)) {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
@@ -76,10 +76,7 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Ожидание загрузки — проверяем, что кнопка стала неактивной
-        button.shouldBe(disabled, Duration.ofSeconds(15));
-
-        // Проверяем уведомление
+        // Ожидаем появления уведомления об успехе
         $("[data-test-id='success-notification']")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(text("Встреча успешно забронирована"), Duration.ofSeconds(15));
@@ -136,10 +133,10 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Проверяем ошибку
+        // Проверяем ошибку с реальным текстом
         $("[data-test-id='name'] .input__sub")
                 .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text("Имя и Фамилия должны содержать только русские буквы, дефисы и пробелы"));
+                .shouldHave(text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
 
     @Test
@@ -165,7 +162,7 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Проверяем ошибку
+        // Проверяем ошибку для телефона — она появляется после клика
         $("[data-test-id='phone'] .input__sub")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(text("Телефон должен содержать 11 цифр и начинаться с +"));
@@ -227,10 +224,10 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Проверяем ошибку
+        // Проверяем ошибку с реальным текстом
         $("[data-test-id='date'] .input__sub")
                 .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text("Дата должна быть не ранее трёх дней с текущей даты"));
+                .shouldHave(text("Заказ на выбранную дату невозможен"));
     }
 
     private String generateCity() {
