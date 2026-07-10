@@ -19,11 +19,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Check JAR file
+        run: |
+          ls -la ./artifacts/
+          file ./artifacts/app-card-delivery.jar
+          unzip -t ./artifacts/app-card-delivery.jar | head -10
+
       - name: Start SUT
         run: |
           java -jar ./artifacts/app-card-delivery.jar &
           sleep 10
-          curl -I http://localhost:9999 || echo "SUT not responding"
+          curl -v http://localhost:9999 || echo "SUT not responding"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
