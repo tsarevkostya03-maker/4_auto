@@ -54,8 +54,9 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(deliveryDate);
 
-        // Имя — по data-test-id родительского span
-        SelenideElement nameField = $("[data-test-id='name'] + input");
+        // Имя — ищем input, который идёт после span с data-test-id='name'
+        // В структуре: span с data-test-id='name', затем текст, затем input
+        SelenideElement nameField = $("[data-test-id='name']").parent().$("input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
@@ -93,7 +94,8 @@ public class DeliveryTest {
 
         // Заполняем остальные поля
         $("input[placeholder='Дата встречи']").setValue(generateDeliveryDate());
-        $("[data-test-id='name'] + input").setValue(name);
+        SelenideElement nameField = $("[data-test-id='name']").parent().$("input");
+        nameField.setValue(name);
         $("input[placeholder='+7 000 000 00 00']").setValue(phone);
         $("[data-test-id='agreement'] input").click();
 
@@ -114,7 +116,7 @@ public class DeliveryTest {
         $("input[placeholder='Дата встречи']").setValue(generateDeliveryDate());
 
         // Невалидное имя (латиница)
-        SelenideElement nameField = $("[data-test-id='name'] + input");
+        SelenideElement nameField = $("[data-test-id='name']").parent().$("input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         nameField.setValue("John Doe");
@@ -137,7 +139,8 @@ public class DeliveryTest {
         // Заполняем поля
         $("input[placeholder='Город']").setValue(city);
         $("input[placeholder='Дата встречи']").setValue(generateDeliveryDate());
-        $("[data-test-id='name'] + input").setValue(name);
+        SelenideElement nameField = $("[data-test-id='name']").parent().$("input");
+        nameField.setValue(name);
 
         // Невалидный телефон (не +7)
         SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
@@ -168,7 +171,8 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue("");
 
-        $("[data-test-id='name'] + input").setValue(name);
+        SelenideElement nameField = $("[data-test-id='name']").parent().$("input");
+        nameField.setValue(name);
         $("input[placeholder='+7 000 000 00 00']").setValue(phone);
         $("[data-test-id='agreement'] input").click();
 
@@ -195,7 +199,8 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(pastDateString);
 
-        $("[data-test-id='name'] + input").setValue(name);
+        SelenideElement nameField = $("[data-test-id='name']").parent().$("input");
+        nameField.setValue(name);
         $("input[placeholder='+7 000 000 00 00']").setValue(phone);
         $("[data-test-id='agreement'] input").click();
 
