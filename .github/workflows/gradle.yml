@@ -22,6 +22,8 @@ jobs:
       - name: Start SUT
         run: |
           java -jar ./artifacts/app-card-delivery.jar &
+          sleep 10
+          curl -I http://localhost:9999 || echo "SUT not responding"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
