@@ -54,7 +54,7 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(deliveryDate);
 
-        // Имя — используем JavaScript для установки значения
+        // Имя
         SelenideElement nameField = $("[data-test-id='name']").parent().$("input");
         executeJavaScript("arguments[0].click();", nameField);
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
@@ -66,13 +66,13 @@ public class DeliveryTest {
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
 
-        // Согласие — используем JavaScript для клика
+        // Согласие
         SelenideElement agreementCheckbox = $("[data-test-id='agreement'] input");
         if (!agreementCheckbox.has(checked)) {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
-        // Кнопка "Запланировать" — по тексту
+        // Кнопка "Запланировать" — по точному тексту
         SelenideElement button = $("button");
         button.shouldHave(text("Запланировать"));
         button.click();
@@ -103,6 +103,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
+        // Кнопка "Запланировать" — по тексту
         SelenideElement button = $("button");
         button.shouldHave(text("Запланировать"));
         button.click();
