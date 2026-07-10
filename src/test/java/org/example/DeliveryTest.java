@@ -72,9 +72,8 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
-        // Кнопка "Запланировать" — по точному тексту
-        SelenideElement button = $("button");
-        button.shouldHave(text("Запланировать"));
+        // Кнопка "Запланировать" — ищем по тексту
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
 
         // Ожидание загрузки
@@ -103,9 +102,8 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
-        // Кнопка "Запланировать" — по тексту
-        SelenideElement button = $("button");
-        button.shouldHave(text("Запланировать"));
+        // Кнопка "Запланировать" — ищем по тексту
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
 
         // Проверяем ошибку
@@ -133,8 +131,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
-        SelenideElement button = $("button");
-        button.shouldHave(text("Запланировать"));
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
 
         // Проверяем ошибку
@@ -163,8 +160,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
-        SelenideElement button = $("button");
-        button.shouldHave(text("Запланировать"));
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
 
         // Проверяем ошибку
@@ -194,8 +190,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
-        SelenideElement button = $("button");
-        button.shouldHave(text("Запланировать"));
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
 
         // Проверяем ошибку
@@ -227,8 +222,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
 
-        SelenideElement button = $("button");
-        button.shouldHave(text("Запланировать"));
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
 
         // Проверяем ошибку
