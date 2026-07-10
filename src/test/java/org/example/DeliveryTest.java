@@ -30,8 +30,8 @@ public class DeliveryTest {
 
         open("http://localhost:9999");
 
-        // Ждём загрузки React-приложения
-        $("h1").shouldBe(visible, Duration.ofSeconds(15));
+        // Ждём загрузки страницы — проверяем наличие любого input
+        $("input").shouldBe(visible, Duration.ofSeconds(15));
 
         faker = new Faker(new Locale("ru"));
         city = generateCity();
@@ -41,38 +41,38 @@ public class DeliveryTest {
 
     @Test
     void shouldSubmitDeliveryForm() {
-        // Город - по placeholder
+        // Город — по placeholder
         SelenideElement cityField = $("input[placeholder='Город']");
         cityField.click();
         cityField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         cityField.setValue(city);
 
-        // Дата - по placeholder
+        // Дата — по placeholder
         String deliveryDate = generateDeliveryDate();
         SelenideElement dateField = $("input[placeholder='Дата встречи']");
         dateField.click();
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(deliveryDate);
 
-        // Имя - по data-test-id родительского span и соседнему input
+        // Имя — по data-test-id родительского span
         SelenideElement nameField = $("[data-test-id='name'] + input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
 
-        // Телефон - по placeholder
+        // Телефон — по placeholder
         SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
         phoneField.click();
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
-        phoneField.setValue("+7" + faker.number().digits(10));
+        phoneField.setValue(phone);
 
-        // Согласие - по data-test-id
+        // Согласие — по data-test-id
         SelenideElement agreementCheckbox = $("[data-test-id='agreement'] input");
         if (!agreementCheckbox.has(checked)) {
             agreementCheckbox.click();
         }
 
-        // Кнопка "Запланировать" - ищем по тексту
+        // Кнопка "Запланировать" — по тексту
         SelenideElement button = $("button");
         button.shouldHave(text("Запланировать"));
         button.click();
@@ -94,7 +94,7 @@ public class DeliveryTest {
         // Заполняем остальные поля
         $("input[placeholder='Дата встречи']").setValue(generateDeliveryDate());
         $("[data-test-id='name'] + input").setValue(name);
-        $("input[placeholder='+7 000 000 00 00']").setValue("+7" + faker.number().digits(10));
+        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
         $("[data-test-id='agreement'] input").click();
 
         SelenideElement button = $("button");
@@ -119,7 +119,7 @@ public class DeliveryTest {
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         nameField.setValue("John Doe");
 
-        $("input[placeholder='+7 000 000 00 00']").setValue("+7" + faker.number().digits(10));
+        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
         $("[data-test-id='agreement'] input").click();
 
         SelenideElement button = $("button");
@@ -169,7 +169,7 @@ public class DeliveryTest {
         dateField.setValue("");
 
         $("[data-test-id='name'] + input").setValue(name);
-        $("input[placeholder='+7 000 000 00 00']").setValue("+7" + faker.number().digits(10));
+        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
         $("[data-test-id='agreement'] input").click();
 
         SelenideElement button = $("button");
@@ -196,7 +196,7 @@ public class DeliveryTest {
         dateField.setValue(pastDateString);
 
         $("[data-test-id='name'] + input").setValue(name);
-        $("input[placeholder='+7 000 000 00 00']").setValue("+7" + faker.number().digits(10));
+        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
         $("[data-test-id='agreement'] input").click();
 
         SelenideElement button = $("button");
