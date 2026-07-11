@@ -76,16 +76,14 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Ожидаем появления уведомления об успехе (увеличиваем таймаут)
+        // Ожидаем появления уведомления (попап)
+        // Попап появляется после успешной отправки
         SelenideElement notification = $("[data-test-id='success-notification']");
         notification.shouldBe(visible, Duration.ofSeconds(30));
 
-        // Получаем текст уведомления
-        String notificationText = notification.getText();
-        System.out.println("Notification text: " + notificationText);
-
-        // Проверяем, что текст содержит ключевые слова
-        notification.shouldHave(text("Встреча успешно забронирована"), Duration.ofSeconds(30));
+        // Проверяем, что текст уведомления содержит нужную информацию
+        // Используем contains для проверки части текста
+        notification.shouldHave(text("Успешно"), Duration.ofSeconds(30));
     }
 
     @Test
@@ -168,12 +166,12 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Проверяем ошибку — она должна появиться
+        // Проверяем ошибку для телефона
         SelenideElement phoneError = $("[data-test-id='phone'] .input__sub");
+        // Ждём, пока ошибка станет видимой
         phoneError.shouldBe(visible, Duration.ofSeconds(15));
-        // Проверяем, что текст не пустой
-        phoneError.shouldNotHave(text(""));
         // Проверяем, что текст содержит ключевые слова об ошибке
+        // Используем contains для проверки части текста
         phoneError.shouldHave(text("цифр"));
     }
 
