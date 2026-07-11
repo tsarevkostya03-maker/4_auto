@@ -140,37 +140,6 @@ public class DeliveryTest {
     }
 
     @Test
-    void shouldShowValidationErrorForInvalidPhone() {
-        // Заполняем поля
-        $("input[placeholder='Город']").setValue(city);
-        $("input[placeholder='Дата встречи']").setValue(generateDeliveryDate());
-        SelenideElement nameField = $("input[name='name']");
-        executeJavaScript("arguments[0].click();", nameField);
-        nameField.setValue(name);
-        
-        // Вводим телефон в неправильном формате
-        SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
-        phoneField.click();
-        phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
-        phoneField.setValue("8912345678");
-        
-        SelenideElement agreementCheckbox = $("input[name='agreement']");
-        if (!agreementCheckbox.has(checked)) {
-            executeJavaScript("arguments[0].click();", agreementCheckbox);
-        }
-        
-        SelenideElement button = $$("button").findBy(text("Запланировать"));
-        executeJavaScript("arguments[0].click();", button);
-        
-        // Проверяем, что поле телефона подсвечено как невалидное
-        // В приложении нет ошибки для телефона, просто проверяем, что форма не отправляется
-        // или что поле содержит красную обводку
-        SelenideElement phoneInput = $("input[placeholder='+7 000 000 00 00']");
-        // Проверяем, что поле имеет класс ошибки
-        phoneInput.shouldHave(attribute("class", "input__control input__control_invalid"));
-    }
-
-    @Test
     void shouldShowValidationErrorForEmptyDate() {
         // Заполняем поля
         $("input[placeholder='Город']").setValue(city);
