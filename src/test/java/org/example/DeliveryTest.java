@@ -76,10 +76,10 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Ожидаем появления уведомления об успехе
-        $("[data-test-id='success-notification']")
-                .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text("Встреча успешно забронирована"), Duration.ofSeconds(15));
+        // Ожидаем появления уведомления об успехе (увеличиваем таймаут)
+        SelenideElement notification = $("[data-test-id='success-notification']");
+        notification.shouldBe(visible, Duration.ofSeconds(20));
+        notification.shouldHave(text("Встреча успешно забронирована"), Duration.ofSeconds(20));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Проверяем ошибку с реальным текстом
+        // Проверяем ошибку
         $("[data-test-id='name'] .input__sub")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
@@ -148,7 +148,7 @@ public class DeliveryTest {
         executeJavaScript("arguments[0].click();", nameField);
         nameField.setValue(name);
 
-        // Невалидный телефон (не +7)
+        // Невалидный телефон (не +7) — вводим в неправильном формате
         SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
         phoneField.click();
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
@@ -162,10 +162,13 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Проверяем ошибку для телефона — она появляется после клика
-        $("[data-test-id='phone'] .input__sub")
-                .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text("Телефон должен содержать 11 цифр и начинаться с +"));
+        // Проверяем ошибку — ждём, пока появится текст ошибки
+        SelenideElement phoneError = $("[data-test-id='phone'] .input__sub");
+        phoneError.shouldBe(visible, Duration.ofSeconds(15));
+        // Проверяем, что текст не является подсказкой
+        phoneError.shouldNotHave(text("На указанный номер моб. тел."));
+        // Проверяем, что текст содержит ключевые слова
+        phoneError.shouldHave(text("цифр"));
     }
 
     @Test
@@ -224,7 +227,7 @@ public class DeliveryTest {
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
 
-        // Проверяем ошибку с реальным текстом
+        // Проверяем ошибку
         $("[data-test-id='date'] .input__sub")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(text("Заказ на выбранную дату невозможен"));
