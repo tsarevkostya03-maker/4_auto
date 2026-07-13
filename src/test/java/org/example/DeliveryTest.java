@@ -70,13 +70,13 @@ public class DeliveryTest {
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // Согласие — кликаем по лейблу
+        // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // Кнопка "Запланировать" — используем JavaScript для клика
-        SelenideElement button = $$("button").findBy(text("Запланировать"));
-        executeJavaScript("arguments[0].click();", button);
+        // Кнопка "Запланировать" — по data-test-id
+        SelenideElement button = $("[data-test-id='order']");
+        button.click();
         
         // Проверяем уведомление об успехе
         SelenideElement notification = $("[data-test-id='success-notification']");
@@ -115,8 +115,8 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $$("button").findBy(text("Запланировать"));
-        executeJavaScript("arguments[0].click();", button);
+        SelenideElement button = $("[data-test-id='order']");
+        button.click();
         
         // Проверяем ошибку
         $("[data-test-id='city'] .input__sub")
@@ -152,8 +152,8 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $$("button").findBy(text("Запланировать"));
-        executeJavaScript("arguments[0].click();", button);
+        SelenideElement button = $("[data-test-id='order']");
+        button.click();
         
         // Проверяем ошибку
         $("[data-test-id='name'] .input__sub")
@@ -188,8 +188,8 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $$("button").findBy(text("Запланировать"));
-        executeJavaScript("arguments[0].click();", button);
+        SelenideElement button = $("[data-test-id='order']");
+        button.click();
         
         // Проверяем ошибку
         $("[data-test-id='date'] .input__sub")
@@ -227,8 +227,8 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $$("button").findBy(text("Запланировать"));
-        executeJavaScript("arguments[0].click();", button);
+        SelenideElement button = $("[data-test-id='order']");
+        button.click();
         
         // Проверяем ошибку
         $("[data-test-id='date'] .input__sub")
