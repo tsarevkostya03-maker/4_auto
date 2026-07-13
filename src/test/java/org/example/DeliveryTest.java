@@ -47,7 +47,6 @@ public class DeliveryTest {
         cityField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         cityField.setValue(city);
         cityField.sendKeys(Keys.ENTER);
-        // Закрываем выпадающий список городов
         $("body").click();
         
         // Дата
@@ -57,7 +56,6 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(deliveryDate);
         dateField.sendKeys(Keys.ENTER);
-        // Закрываем календарь
         $("body").click();
         
         // Имя
@@ -72,18 +70,21 @@ public class DeliveryTest {
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // Согласие — кликаем по лейблу, а не по чекбоксу
+        // Согласие — кликаем по лейблу
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // Кнопка "Запланировать" — по тексту
+        // Кнопка "Запланировать"
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
-        // Ожидаем появления уведомления
+        // Проверяем уведомление об успехе
         SelenideElement notification = $("[data-test-id='success-notification']");
         notification.shouldBe(visible, Duration.ofSeconds(30));
-        notification.shouldHave(text("Успешно"), Duration.ofSeconds(30));
+        
+        // Проверяем текст уведомления с датой
+        String expectedMessage = "Встреча успешно забронирована на " + deliveryDate;
+        notification.$(".notification__content").shouldHave(text(expectedMessage), Duration.ofSeconds(30));
     }
 
     @Test
