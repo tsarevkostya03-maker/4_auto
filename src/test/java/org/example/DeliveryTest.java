@@ -41,40 +41,42 @@ public class DeliveryTest {
 
     @Test
     void shouldSubmitDeliveryForm() {
-        // Город
+        // Город — клик через JavaScript
         SelenideElement cityField = $("input[placeholder='Город']");
-        cityField.click();
+        executeJavaScript("arguments[0].click();", cityField);
         cityField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         cityField.setValue(city);
         
-        // Дата
+        // Дата — клик через JavaScript
         String deliveryDate = generateDeliveryDate();
         SelenideElement dateField = $("input[placeholder='Дата встречи']");
-        dateField.click();
+        executeJavaScript("arguments[0].click();", dateField);
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(deliveryDate);
+        // Закрываем календарь
+        dateField.sendKeys(Keys.ENTER);
         
-        // Имя
+        // Имя — клик через JavaScript
         SelenideElement nameField = $("input[name='name']");
-        nameField.click();
+        executeJavaScript("arguments[0].click();", nameField);
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
         
         // Телефон
         SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
-        phoneField.click();
+        executeJavaScript("arguments[0].click();", phoneField);
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // Согласие
+        // Согласие — клик через JavaScript
         SelenideElement agreementCheckbox = $("input[name='agreement']");
         if (!agreementCheckbox.has(checked)) {
-            agreementCheckbox.click();
+            executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        // Кнопка "Запланировать"
+        // Кнопка "Запланировать" — клик через JavaScript
         SelenideElement button = $$("button").findBy(text("Запланировать"));
-        button.click();
+        executeJavaScript("arguments[0].click();", button);
         
         // Ожидаем появления уведомления
         SelenideElement notification = $("[data-test-id='success-notification']");
@@ -86,23 +88,31 @@ public class DeliveryTest {
     void shouldShowValidationErrorForInvalidCity() {
         // Невалидный город
         SelenideElement cityField = $("input[placeholder='Город']");
-        cityField.click();
+        executeJavaScript("arguments[0].click();", cityField);
         cityField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         cityField.setValue("InvalidCity");
         
-        // Заполняем остальные поля
-        $("input[placeholder='Дата встречи']").setValue(generateDeliveryDate());
+        // Заполняем остальные поля через JavaScript
+        SelenideElement dateField = $("input[placeholder='Дата встречи']");
+        executeJavaScript("arguments[0].click();", dateField);
+        dateField.setValue(generateDeliveryDate());
+        dateField.sendKeys(Keys.ENTER);
+        
         SelenideElement nameField = $("input[name='name']");
+        executeJavaScript("arguments[0].click();", nameField);
         nameField.setValue(name);
-        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
+        
+        SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
+        executeJavaScript("arguments[0].click();", phoneField);
+        phoneField.setValue(phone);
         
         SelenideElement agreementCheckbox = $("input[name='agreement']");
         if (!agreementCheckbox.has(checked)) {
-            agreementCheckbox.click();
+            executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
         SelenideElement button = $$("button").findBy(text("Запланировать"));
-        button.click();
+        executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
         $("[data-test-id='city'] .input__sub")
@@ -113,24 +123,32 @@ public class DeliveryTest {
     @Test
     void shouldShowValidationErrorForInvalidName() {
         // Заполняем город
-        $("input[placeholder='Город']").setValue(city);
-        $("input[placeholder='Дата встречи']").setValue(generateDeliveryDate());
+        SelenideElement cityField = $("input[placeholder='Город']");
+        executeJavaScript("arguments[0].click();", cityField);
+        cityField.setValue(city);
+        
+        SelenideElement dateField = $("input[placeholder='Дата встречи']");
+        executeJavaScript("arguments[0].click();", dateField);
+        dateField.setValue(generateDeliveryDate());
+        dateField.sendKeys(Keys.ENTER);
         
         // Невалидное имя (латиница)
         SelenideElement nameField = $("input[name='name']");
-        nameField.click();
+        executeJavaScript("arguments[0].click();", nameField);
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         nameField.setValue("John Doe");
         
-        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
+        SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
+        executeJavaScript("arguments[0].click();", phoneField);
+        phoneField.setValue(phone);
         
         SelenideElement agreementCheckbox = $("input[name='agreement']");
         if (!agreementCheckbox.has(checked)) {
-            agreementCheckbox.click();
+            executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
         SelenideElement button = $$("button").findBy(text("Запланировать"));
-        button.click();
+        executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
         $("[data-test-id='name'] .input__sub")
@@ -141,25 +159,31 @@ public class DeliveryTest {
     @Test
     void shouldShowValidationErrorForEmptyDate() {
         // Заполняем поля
-        $("input[placeholder='Город']").setValue(city);
+        SelenideElement cityField = $("input[placeholder='Город']");
+        executeJavaScript("arguments[0].click();", cityField);
+        cityField.setValue(city);
         
         // Пустая дата
         SelenideElement dateField = $("input[placeholder='Дата встречи']");
-        dateField.click();
+        executeJavaScript("arguments[0].click();", dateField);
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue("");
         
         SelenideElement nameField = $("input[name='name']");
+        executeJavaScript("arguments[0].click();", nameField);
         nameField.setValue(name);
-        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
+        
+        SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
+        executeJavaScript("arguments[0].click();", phoneField);
+        phoneField.setValue(phone);
         
         SelenideElement agreementCheckbox = $("input[name='agreement']");
         if (!agreementCheckbox.has(checked)) {
-            agreementCheckbox.click();
+            executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
         SelenideElement button = $$("button").findBy(text("Запланировать"));
-        button.click();
+        executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
         $("[data-test-id='date'] .input__sub")
@@ -173,24 +197,31 @@ public class DeliveryTest {
         LocalDate pastDate = LocalDate.now().minusDays(1);
         String pastDateString = pastDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         
-        $("input[placeholder='Город']").setValue(city);
+        SelenideElement cityField = $("input[placeholder='Город']");
+        executeJavaScript("arguments[0].click();", cityField);
+        cityField.setValue(city);
         
         SelenideElement dateField = $("input[placeholder='Дата встречи']");
-        dateField.click();
+        executeJavaScript("arguments[0].click();", dateField);
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(pastDateString);
+        dateField.sendKeys(Keys.ENTER);
         
         SelenideElement nameField = $("input[name='name']");
+        executeJavaScript("arguments[0].click();", nameField);
         nameField.setValue(name);
-        $("input[placeholder='+7 000 000 00 00']").setValue(phone);
+        
+        SelenideElement phoneField = $("input[placeholder='+7 000 000 00 00']");
+        executeJavaScript("arguments[0].click();", phoneField);
+        phoneField.setValue(phone);
         
         SelenideElement agreementCheckbox = $("input[name='agreement']");
         if (!agreementCheckbox.has(checked)) {
-            agreementCheckbox.click();
+            executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
         SelenideElement button = $$("button").findBy(text("Запланировать"));
-        button.click();
+        executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
         $("[data-test-id='date'] .input__sub")
