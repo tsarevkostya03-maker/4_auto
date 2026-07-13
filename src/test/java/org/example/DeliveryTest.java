@@ -73,8 +73,8 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        // Кнопка "Запланировать" — ищем по data-test-id
-        SelenideElement button = $("[data-test-id='order']");
+        // Кнопка "Запланировать" — по тексту
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
         
         // Ожидаем появления уведомления
@@ -110,7 +110,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order']");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
@@ -146,7 +146,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order']");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
@@ -181,7 +181,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order']");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
@@ -219,7 +219,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order']");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
