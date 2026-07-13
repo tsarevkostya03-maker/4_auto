@@ -74,8 +74,8 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // Кнопка "Запланировать" — ищем по классу и тексту, так как data-test-id не работает
-        SelenideElement button = $("button.button");
+        // Кнопка "Запланировать" — ищем по тексту
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
         // Проверяем уведомление об успехе
@@ -115,7 +115,7 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $("button.button");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
         // Проверяем ошибку
@@ -152,7 +152,7 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $("button.button");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
         // Проверяем ошибку
@@ -188,7 +188,7 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $("button.button");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
         // Проверяем ошибку
@@ -227,7 +227,7 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        SelenideElement button = $("button.button");
+        SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
         // Проверяем ошибку
