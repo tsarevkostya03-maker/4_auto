@@ -41,13 +41,13 @@ public class DeliveryTest {
 
     @Test
     void shouldSubmitDeliveryForm() {
-        // Город — по data-test-id
+        // Город
         SelenideElement cityField = $("[data-test-id='city'] input");
         executeJavaScript("arguments[0].click();", cityField);
         cityField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         cityField.setValue(city);
         
-        // Дата — по data-test-id
+        // Дата
         String deliveryDate = generateDeliveryDate();
         SelenideElement dateField = $("[data-test-id='date'] input");
         executeJavaScript("arguments[0].click();", dateField);
@@ -55,26 +55,26 @@ public class DeliveryTest {
         dateField.setValue(deliveryDate);
         dateField.sendKeys(Keys.ENTER);
         
-        // Имя — по data-test-id
+        // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         executeJavaScript("arguments[0].click();", nameField);
         nameField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
         
-        // Телефон — по data-test-id
+        // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         executeJavaScript("arguments[0].click();", phoneField);
         phoneField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // Согласие — по data-test-id
+        // Согласие
         SelenideElement agreementCheckbox = $("[data-test-id='agreement'] input");
         if (!agreementCheckbox.has(checked)) {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        // Кнопка "Запланировать" — по data-test-id
-        SelenideElement button = $("[data-test-id='order'] .button");
+        // Кнопка "Запланировать" — ищем по data-test-id
+        SelenideElement button = $("[data-test-id='order']");
         executeJavaScript("arguments[0].click();", button);
         
         // Ожидаем появления уведомления
@@ -110,7 +110,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order'] .button");
+        SelenideElement button = $("[data-test-id='order']");
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
@@ -146,7 +146,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order'] .button");
+        SelenideElement button = $("[data-test-id='order']");
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
@@ -181,7 +181,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order'] .button");
+        SelenideElement button = $("[data-test-id='order']");
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
@@ -219,7 +219,7 @@ public class DeliveryTest {
             executeJavaScript("arguments[0].click();", agreementCheckbox);
         }
         
-        SelenideElement button = $("[data-test-id='order'] .button");
+        SelenideElement button = $("[data-test-id='order']");
         executeJavaScript("arguments[0].click();", button);
         
         // Проверяем ошибку
