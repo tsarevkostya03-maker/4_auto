@@ -39,6 +39,11 @@ public class DeliveryTest {
         phone = "+7" + faker.number().digits(10);
     }
 
+    private void closeCalendar() {
+        // Нажимаем ESC или кликаем вне календаря, чтобы закрыть его
+        $("body").click();
+    }
+
     @Test
     void shouldSubmitDeliveryForm() {
         // Город
@@ -46,6 +51,7 @@ public class DeliveryTest {
         cityField.click();
         cityField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         cityField.setValue(city);
+        cityField.sendKeys(Keys.ENTER);
         
         // Дата
         String deliveryDate = generateDeliveryDate();
@@ -54,6 +60,8 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(deliveryDate);
         dateField.sendKeys(Keys.ENTER);
+        // Закрываем календарь
+        $("body").click();
         
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
@@ -90,12 +98,14 @@ public class DeliveryTest {
         cityField.click();
         cityField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         cityField.setValue("InvalidCity");
+        cityField.sendKeys(Keys.ENTER);
         
         // Заполняем остальные поля
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
         dateField.setValue(generateDeliveryDate());
         dateField.sendKeys(Keys.ENTER);
+        $("body").click();
         
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
@@ -125,11 +135,13 @@ public class DeliveryTest {
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.click();
         cityField.setValue(city);
+        cityField.sendKeys(Keys.ENTER);
         
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
         dateField.setValue(generateDeliveryDate());
         dateField.sendKeys(Keys.ENTER);
+        $("body").click();
         
         // Невалидное имя (латиница)
         SelenideElement nameField = $("[data-test-id='name'] input");
@@ -161,12 +173,14 @@ public class DeliveryTest {
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.click();
         cityField.setValue(city);
+        cityField.sendKeys(Keys.ENTER);
         
         // Пустая дата
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue("");
+        $("body").click();
         
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
@@ -199,12 +213,14 @@ public class DeliveryTest {
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.click();
         cityField.setValue(city);
+        cityField.sendKeys(Keys.ENTER);
         
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
         dateField.sendKeys(Keys.chord(Keys.COMMAND, "a"), Keys.BACK_SPACE);
         dateField.setValue(pastDateString);
         dateField.sendKeys(Keys.ENTER);
+        $("body").click();
         
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
