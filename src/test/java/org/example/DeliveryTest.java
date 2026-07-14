@@ -20,7 +20,7 @@ public class DeliveryTest {
     private String city;
     private String name;
     private String phone;
-    private String deliveryDate; // Сохраняем дату для всех тестов
+    private String deliveryDate;
 
     @BeforeEach
     void setUp() {
@@ -31,108 +31,117 @@ public class DeliveryTest {
         
         open("http://localhost:9999");
         
-        // Ждём загрузки страницы
         $("[data-test-id='city']").shouldBe(visible, Duration.ofSeconds(15));
         
         faker = new Faker(new Locale("ru"));
         city = generateCity();
         name = faker.name().firstName() + " " + faker.name().lastName();
         phone = "+7" + faker.number().digits(10);
-        deliveryDate = generateDeliveryDate(); // Генерируем дату один раз
+        deliveryDate = generateDeliveryDate();
+    }
+
+    // Вспомогательный метод для заполнения города
+    private void fillCity(String cityName) {
+        SelenideElement cityField = $("[data-test-id='city'] input");
+        cityField.click();
+        cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        cityField.setValue(cityName);
+        cityField.sendKeys(Keys.ENTER);
+        
+        // Ждём появления выпадающего списка
+        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
+        $(".menu-item").click();
+        
+        // Закрываем всплывающее окно кликом по body
+        $("body").click();
+        // Дополнительная пауза для закрытия попапа
+        sleep(300);
+    }
+
+    // Вспомогательный метод для заполнения даты
+    private void fillDate(String date) {
+        SelenideElement dateField = $("[data-test-id='date'] input");
+        dateField.click();
+        dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        dateField.setValue(date);
+        dateField.sendKeys(Keys.ENTER);
+        // Закрываем календарь
+        $("body").click();
+        sleep(300);
     }
 
     @Test
     void shouldSubmitDeliveryForm() {
-        // === ГОРОД ===
-        SelenideElement cityField = $("[data-test-id='city'] input");
-        cityField.click();
-        // ВНИМАНИЕ: на Linux используем Keys.CONTROL, на Mac - Keys.COMMAND
-        cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        cityField.setValue(city);
-        cityField.sendKeys(Keys.ENTER);
+        // Город
+        fillCity(city);
         
-        // Ждём появления выпадающего списка и выбираем первый вариант
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click(); // Обязательно кликаем по варианту из списка!
+        // Дата
+        fillDate(deliveryDate);
         
-        // === ДАТА ===
-        SelenideElement dateField = $("[data-test-id='date'] input");
-        dateField.click();
-        dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        dateField.setValue(deliveryDate);
-        dateField.sendKeys(Keys.ENTER);
-        
-        // Небольшая пауза, чтобы дата успела примениться
-        sleep(500);
-        
-        // === ИМЯ ===
+        // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
         
-        // === ТЕЛЕФОН ===
+        // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.click();
         phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // === СОГЛАСИЕ ===
+        // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // === КНОПКА "ЗАПЛАНИРОВАТЬ" ===
+        // Кнопка "Запланировать"
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
-        // === ПРОВЕРКА УВЕДОМЛЕНИЯ ===
+        // Проверка уведомления
         SelenideElement notification = $("[data-test-id='success-notification']");
         notification.shouldBe(visible, Duration.ofSeconds(30));
         
-        // Проверяем текст уведомления
         String expectedMessage = "Встреча успешно забронирована на " + deliveryDate;
         notification.$(".notification__content").shouldHave(text(expectedMessage), Duration.ofSeconds(30));
     }
 
     @Test
     void shouldShowValidationErrorForInvalidCity() {
-        // === НЕВАЛИДНЫЙ ГОРОД ===
+        // Невалидный город
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.click();
         cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         cityField.setValue("InvalidCity");
         cityField.sendKeys(Keys.ENTER);
-        sleep(500);
+        // Закрываем попап
+        $("body").click();
+        sleep(300);
         
-        // === ДАТА ===
-        SelenideElement dateField = $("[data-test-id='date'] input");
-        dateField.click();
-        dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        dateField.setValue(deliveryDate);
-        dateField.sendKeys(Keys.ENTER);
-        sleep(500);
+        // Дата
+        fillDate(deliveryDate);
         
-        // === ИМЯ ===
+        // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
         
-        // === ТЕЛЕФОН ===
+        // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.click();
         phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // === СОГЛАСИЕ ===
+        // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // === КНОПКА ===
+        // Кнопка
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
-        // === ПРОВЕРКА ОШИБКИ ===
+        // Проверка ошибки
         $("[data-test-id='city'] .input__sub")
             .shouldBe(visible, Duration.ofSeconds(15))
             .shouldHave(text("Доставка в выбранный город недоступна"));
@@ -140,44 +149,33 @@ public class DeliveryTest {
 
     @Test
     void shouldShowValidationErrorForInvalidName() {
-        // === ГОРОД ===
-        SelenideElement cityField = $("[data-test-id='city'] input");
-        cityField.click();
-        cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        cityField.setValue(city);
-        cityField.sendKeys(Keys.ENTER);
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click();
+        // Город
+        fillCity(city);
         
-        // === ДАТА ===
-        SelenideElement dateField = $("[data-test-id='date'] input");
-        dateField.click();
-        dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        dateField.setValue(deliveryDate);
-        dateField.sendKeys(Keys.ENTER);
-        sleep(500);
+        // Дата
+        fillDate(deliveryDate);
         
-        // === НЕВАЛИДНОЕ ИМЯ (латиница) ===
+        // Невалидное имя (латиница)
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         nameField.setValue("John Doe");
         
-        // === ТЕЛЕФОН ===
+        // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.click();
         phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // === СОГЛАСИЕ ===
+        // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // === КНОПКА ===
+        // Кнопка
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
-        // === ПРОВЕРКА ОШИБКИ ===
+        // Проверка ошибки
         $("[data-test-id='name'] .input__sub")
             .shouldBe(visible, Duration.ofSeconds(15))
             .shouldHave(text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
@@ -185,43 +183,38 @@ public class DeliveryTest {
 
     @Test
     void shouldShowValidationErrorForEmptyDate() {
-        // === ГОРОД ===
-        SelenideElement cityField = $("[data-test-id='city'] input");
-        cityField.click();
-        cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        cityField.setValue(city);
-        cityField.sendKeys(Keys.ENTER);
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click();
+        // Город
+        fillCity(city);
         
-        // === ПУСТАЯ ДАТА ===
+        // Пустая дата
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
         dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         dateField.setValue("");
         $("body").click();
+        sleep(300);
         
-        // === ИМЯ ===
+        // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
         
-        // === ТЕЛЕФОН ===
+        // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.click();
         phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // === СОГЛАСИЕ ===
+        // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // === КНОПКА ===
+        // Кнопка
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
-        // === ПРОВЕРКА ОШИБКИ ===
+        // Проверка ошибки
         $("[data-test-id='date'] .input__sub")
             .shouldBe(visible, Duration.ofSeconds(15))
             .shouldHave(text("Неверно введена дата"));
@@ -229,48 +222,43 @@ public class DeliveryTest {
 
     @Test
     void shouldShowValidationErrorForPastDate() {
-        // === ДАТА В ПРОШЛОМ ===
+        // Дата в прошлом
         LocalDate pastDate = LocalDate.now().minusDays(1);
         String pastDateString = pastDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         
-        // === ГОРОД ===
-        SelenideElement cityField = $("[data-test-id='city'] input");
-        cityField.click();
-        cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        cityField.setValue(city);
-        cityField.sendKeys(Keys.ENTER);
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click();
+        // Город
+        fillCity(city);
         
-        // === ДАТА В ПРОШЛОМ ===
+        // Дата в прошлом
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
         dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         dateField.setValue(pastDateString);
         dateField.sendKeys(Keys.ENTER);
-        sleep(500);
+        $("body").click();
+        sleep(300);
         
-        // === ИМЯ ===
+        // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
         nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         nameField.setValue(name);
         
-        // === ТЕЛЕФОН ===
+        // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.click();
         phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         phoneField.setValue(phone);
         
-        // === СОГЛАСИЕ ===
+        // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // === КНОПКА ===
+        // Кнопка
         SelenideElement button = $$("button").findBy(text("Запланировать"));
         button.click();
         
-        // === ПРОВЕРКА ОШИБКИ ===
+        // Проверка ошибки
         $("[data-test-id='date'] .input__sub")
             .shouldBe(visible, Duration.ofSeconds(15))
             .shouldHave(text("Заказ на выбранную дату невозможен"));
