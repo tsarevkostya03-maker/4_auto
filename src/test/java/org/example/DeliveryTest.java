@@ -51,6 +51,10 @@ public class DeliveryTest {
         $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
         $(".menu-item").click();
         
+        // Проверяем, что город выбрался
+        String selectedCity = cityField.getValue();
+        System.out.println("Selected city: " + selectedCity);
+        
         // Закрываем всплывающее окно
         $("body").click();
         sleep(500);
@@ -58,27 +62,21 @@ public class DeliveryTest {
 
     private void fillDate(String date) {
         SelenideElement dateField = $("[data-test-id='date'] input");
-        // Кликаем по полю чтобы открыть календарь
         dateField.click();
         sleep(300);
         
-        // Очищаем поле
         dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         sleep(200);
         
-        // Вводим дату
         dateField.setValue(date);
         sleep(200);
         
-        // Нажимаем Enter для подтверждения
         dateField.sendKeys(Keys.ENTER);
         sleep(500);
         
-        // Закрываем календарь если он открыт
         $("body").click();
         sleep(300);
         
-        // Проверяем, что дата установилась
         String currentValue = dateField.getValue();
         System.out.println("Current date value: " + currentValue);
     }
@@ -108,6 +106,12 @@ public class DeliveryTest {
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
+        
+        // Проверяем, что все поля заполнены
+        System.out.println("City: " + $("[data-test-id='city'] input").getValue());
+        System.out.println("Date: " + $("[data-test-id='date'] input").getValue());
+        System.out.println("Name: " + $("[data-test-id='name'] input").getValue());
+        System.out.println("Phone: " + $("[data-test-id='phone'] input").getValue());
         
         // Кнопка "Запланировать"
         SelenideElement button = $$("button").findBy(text("Запланировать"));
