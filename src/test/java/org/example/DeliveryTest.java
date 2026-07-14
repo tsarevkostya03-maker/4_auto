@@ -6,6 +6,7 @@ import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -68,6 +69,7 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.ENTER);
         sleep(300);
         
+        // Закрываем календарь
         $("body").click();
         sleep(200);
         
@@ -79,9 +81,13 @@ public class DeliveryTest {
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.click();
         nameField.clear();
-        nameField.setValue(nameValue);
-        // Просто кликаем вне поля для применения значения
-        $("body").click();
+        // Используем Actions для более реалистичного ввода
+        Actions actions = new Actions(driver());
+        actions.moveToElement(nameField)
+               .click()
+               .sendKeys(nameValue)
+               .sendKeys(Keys.TAB)
+               .perform();
         sleep(200);
     }
 
@@ -89,8 +95,12 @@ public class DeliveryTest {
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.click();
         phoneField.clear();
-        phoneField.setValue(phoneValue);
-        $("body").click();
+        Actions actions = new Actions(driver());
+        actions.moveToElement(phoneField)
+               .click()
+               .sendKeys(phoneValue)
+               .sendKeys(Keys.TAB)
+               .perform();
         sleep(200);
     }
 
