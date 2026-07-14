@@ -2,6 +2,7 @@ package org.example;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,6 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.ENTER);
         sleep(300);
         
-        // Закрываем календарь
         $("body").click();
         sleep(200);
         
@@ -82,7 +82,7 @@ public class DeliveryTest {
         nameField.click();
         nameField.clear();
         // Используем Actions для более реалистичного ввода
-        Actions actions = new Actions(driver());
+        Actions actions = new Actions(WebDriverRunner.getWebDriver());
         actions.moveToElement(nameField)
                .click()
                .sendKeys(nameValue)
@@ -95,7 +95,7 @@ public class DeliveryTest {
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.click();
         phoneField.clear();
-        Actions actions = new Actions(driver());
+        Actions actions = new Actions(WebDriverRunner.getWebDriver());
         actions.moveToElement(phoneField)
                .click()
                .sendKeys(phoneValue)
