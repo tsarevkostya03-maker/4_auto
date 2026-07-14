@@ -118,6 +118,29 @@ public class DeliveryTest {
         button.shouldBe(visible, Duration.ofSeconds(5));
         button.click();
         
+        // Проверяем наличие ошибок валидации
+        // Ждём немного, чтобы ошибки появились
+        sleep(1000);
+        
+        // Проверяем все поля на наличие ошибок
+        SelenideElement cityError = $("[data-test-id='city'] .input__sub");
+        SelenideElement dateError = $("[data-test-id='date'] .input__sub");
+        SelenideElement nameError = $("[data-test-id='name'] .input__sub");
+        SelenideElement phoneError = $("[data-test-id='phone'] .input__sub");
+        
+        if (cityError.isDisplayed()) {
+            System.out.println("City error: " + cityError.getText());
+        }
+        if (dateError.isDisplayed()) {
+            System.out.println("Date error: " + dateError.getText());
+        }
+        if (nameError.isDisplayed()) {
+            System.out.println("Name error: " + nameError.getText());
+        }
+        if (phoneError.isDisplayed()) {
+            System.out.println("Phone error: " + phoneError.getText());
+        }
+        
         // Ждём появления уведомления
         SelenideElement notification = $("[data-test-id='success-notification']");
         notification.shouldBe(visible, Duration.ofSeconds(30));
