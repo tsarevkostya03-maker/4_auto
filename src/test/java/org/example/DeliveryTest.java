@@ -45,7 +45,6 @@ public class DeliveryTest {
         cityField.click();
         cityField.clear();
         cityField.setValue(cityName);
-        cityField.sendKeys(Keys.ENTER);
         
         // Ждём появления выпадающего списка
         $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
@@ -57,7 +56,7 @@ public class DeliveryTest {
         
         // Закрываем всплывающее окно
         $("body").click();
-        sleep(500);
+        sleep(300);
     }
 
     private void fillDate(String date) {
@@ -65,11 +64,12 @@ public class DeliveryTest {
         dateField.click();
         dateField.clear();
         dateField.setValue(date);
+        // Нажимаем Enter для подтверждения
         dateField.sendKeys(Keys.ENTER);
-        sleep(500);
+        sleep(300);
         
         $("body").click();
-        sleep(300);
+        sleep(200);
         
         String currentValue = dateField.getValue();
         System.out.println("Current date value: " + currentValue);
@@ -80,8 +80,8 @@ public class DeliveryTest {
         nameField.click();
         nameField.clear();
         nameField.setValue(nameValue);
-        // Нажимаем Tab для применения значения
-        nameField.sendKeys(Keys.TAB);
+        // Просто кликаем вне поля для применения значения
+        $("body").click();
         sleep(200);
     }
 
@@ -90,7 +90,7 @@ public class DeliveryTest {
         phoneField.click();
         phoneField.clear();
         phoneField.setValue(phoneValue);
-        phoneField.sendKeys(Keys.TAB);
+        $("body").click();
         sleep(200);
     }
 
