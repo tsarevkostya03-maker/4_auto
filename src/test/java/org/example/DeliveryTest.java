@@ -43,7 +43,7 @@ public class DeliveryTest {
     private void fillCity(String cityName) {
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.click();
-        cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        cityField.clear();
         cityField.setValue(cityName);
         cityField.sendKeys(Keys.ENTER);
         
@@ -63,14 +63,8 @@ public class DeliveryTest {
     private void fillDate(String date) {
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
-        sleep(300);
-        
-        dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        sleep(200);
-        
+        dateField.clear();
         dateField.setValue(date);
-        sleep(200);
-        
         dateField.sendKeys(Keys.ENTER);
         sleep(500);
         
@@ -79,6 +73,25 @@ public class DeliveryTest {
         
         String currentValue = dateField.getValue();
         System.out.println("Current date value: " + currentValue);
+    }
+
+    private void fillName(String nameValue) {
+        SelenideElement nameField = $("[data-test-id='name'] input");
+        nameField.click();
+        nameField.clear();
+        nameField.setValue(nameValue);
+        // Нажимаем Tab для применения значения
+        nameField.sendKeys(Keys.TAB);
+        sleep(200);
+    }
+
+    private void fillPhone(String phoneValue) {
+        SelenideElement phoneField = $("[data-test-id='phone'] input");
+        phoneField.click();
+        phoneField.clear();
+        phoneField.setValue(phoneValue);
+        phoneField.sendKeys(Keys.TAB);
+        sleep(200);
     }
 
     @Test
@@ -92,16 +105,10 @@ public class DeliveryTest {
         fillDate(deliveryDate);
         
         // Имя
-        SelenideElement nameField = $("[data-test-id='name'] input");
-        nameField.click();
-        nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        nameField.setValue(name);
+        fillName(name);
         
         // Телефон
-        SelenideElement phoneField = $("[data-test-id='phone'] input");
-        phoneField.click();
-        phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        phoneField.setValue(phone);
+        fillPhone(phone);
         
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -119,10 +126,8 @@ public class DeliveryTest {
         button.click();
         
         // Проверяем наличие ошибок валидации
-        // Ждём немного, чтобы ошибки появились
         sleep(1000);
         
-        // Проверяем все поля на наличие ошибок
         SelenideElement cityError = $("[data-test-id='city'] .input__sub");
         SelenideElement dateError = $("[data-test-id='date'] .input__sub");
         SelenideElement nameError = $("[data-test-id='name'] .input__sub");
@@ -141,6 +146,12 @@ public class DeliveryTest {
             System.out.println("Phone error: " + phoneError.getText());
         }
         
+        // Если есть ошибки, тест должен упасть
+        cityError.shouldNotBe(visible, Duration.ofSeconds(5));
+        dateError.shouldNotBe(visible, Duration.ofSeconds(5));
+        nameError.shouldNotBe(visible, Duration.ofSeconds(5));
+        phoneError.shouldNotBe(visible, Duration.ofSeconds(5));
+        
         // Ждём появления уведомления
         SelenideElement notification = $("[data-test-id='success-notification']");
         notification.shouldBe(visible, Duration.ofSeconds(30));
@@ -155,7 +166,7 @@ public class DeliveryTest {
         // Невалидный город
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.click();
-        cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        cityField.clear();
         cityField.setValue("InvalidCity");
         cityField.sendKeys(Keys.ENTER);
         $("body").click();
@@ -165,16 +176,10 @@ public class DeliveryTest {
         fillDate(deliveryDate);
         
         // Имя
-        SelenideElement nameField = $("[data-test-id='name'] input");
-        nameField.click();
-        nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        nameField.setValue(name);
+        fillName(name);
         
         // Телефон
-        SelenideElement phoneField = $("[data-test-id='phone'] input");
-        phoneField.click();
-        phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        phoneField.setValue(phone);
+        fillPhone(phone);
         
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -199,16 +204,10 @@ public class DeliveryTest {
         fillDate(deliveryDate);
         
         // Невалидное имя (латиница)
-        SelenideElement nameField = $("[data-test-id='name'] input");
-        nameField.click();
-        nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        nameField.setValue("John Doe");
+        fillName("John Doe");
         
         // Телефон
-        SelenideElement phoneField = $("[data-test-id='phone'] input");
-        phoneField.click();
-        phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        phoneField.setValue(phone);
+        fillPhone(phone);
         
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -232,22 +231,16 @@ public class DeliveryTest {
         // Пустая дата
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
-        dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        dateField.clear();
         dateField.setValue("");
         $("body").click();
         sleep(500);
         
         // Имя
-        SelenideElement nameField = $("[data-test-id='name'] input");
-        nameField.click();
-        nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        nameField.setValue(name);
+        fillName(name);
         
         // Телефон
-        SelenideElement phoneField = $("[data-test-id='phone'] input");
-        phoneField.click();
-        phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        phoneField.setValue(phone);
+        fillPhone(phone);
         
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -276,16 +269,10 @@ public class DeliveryTest {
         fillDate(pastDateString);
         
         // Имя
-        SelenideElement nameField = $("[data-test-id='name'] input");
-        nameField.click();
-        nameField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        nameField.setValue(name);
+        fillName(name);
         
         // Телефон
-        SelenideElement phoneField = $("[data-test-id='phone'] input");
-        phoneField.click();
-        phoneField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        phoneField.setValue(phone);
+        fillPhone(phone);
         
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
