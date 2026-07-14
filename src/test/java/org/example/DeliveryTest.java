@@ -40,7 +40,6 @@ public class DeliveryTest {
         deliveryDate = generateDeliveryDate();
     }
 
-    // Вспомогательный метод для заполнения города
     private void fillCity(String cityName) {
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.click();
@@ -52,20 +51,17 @@ public class DeliveryTest {
         $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
         $(".menu-item").click();
         
-        // Закрываем всплывающее окно кликом по body
+        // Закрываем всплывающее окно
         $("body").click();
-        // Дополнительная пауза для закрытия попапа
         sleep(300);
     }
 
-    // Вспомогательный метод для заполнения даты
     private void fillDate(String date) {
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.click();
         dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         dateField.setValue(date);
         dateField.sendKeys(Keys.ENTER);
-        // Закрываем календарь
         $("body").click();
         sleep(300);
     }
@@ -94,14 +90,17 @@ public class DeliveryTest {
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
         agreementLabel.click();
         
-        // Кнопка "Запланировать"
+        // Проверяем, что все поля заполнены корректно
+        // Ждём, пока кнопка станет активной
         SelenideElement button = $$("button").findBy(text("Запланировать"));
+        button.shouldBe(visible, Duration.ofSeconds(5));
         button.click();
         
-        // Проверка уведомления
+        // Ждём появления уведомления
         SelenideElement notification = $("[data-test-id='success-notification']");
         notification.shouldBe(visible, Duration.ofSeconds(30));
         
+        // Проверяем текст уведомления
         String expectedMessage = "Встреча успешно забронирована на " + deliveryDate;
         notification.$(".notification__content").shouldHave(text(expectedMessage), Duration.ofSeconds(30));
     }
@@ -114,7 +113,6 @@ public class DeliveryTest {
         cityField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         cityField.setValue("InvalidCity");
         cityField.sendKeys(Keys.ENTER);
-        // Закрываем попап
         $("body").click();
         sleep(300);
         
