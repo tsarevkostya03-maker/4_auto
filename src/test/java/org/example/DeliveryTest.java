@@ -21,7 +21,6 @@ public class DeliveryTest {
     private String name;
     private String phone;
     private String deliveryDate;
-    private LocalDate deliveryLocalDate;
 
     @BeforeEach
     void setUp() {
@@ -38,8 +37,7 @@ public class DeliveryTest {
         city = generateCity();
         name = faker.name().firstName() + " " + faker.name().lastName();
         phone = "+7" + faker.number().digits(10);
-        deliveryLocalDate = generateDeliveryDate();
-        deliveryDate = deliveryLocalDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        deliveryDate = generateDeliveryDate();
     }
 
     private void fillCity(String cityName) {
@@ -49,75 +47,36 @@ public class DeliveryTest {
         cityField.setValue(cityName);
         cityField.sendKeys(Keys.ENTER);
         
-        // Ждём появления выпадающего списка
+        // Ждём появления выпадающего списка и выбираем первый вариант
         $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
         $(".menu-item").click();
         
         // Закрываем всплывающее окно
         $("body").click();
-        sleep(300);
+        sleep(500);
     }
 
-    private void fillDateViaCalendar(LocalDate date) {
+    private void fillDate(String date) {
         SelenideElement dateField = $("[data-test-id='date'] input");
+        // Кликаем по полю чтобы открыть календарь
         dateField.click();
-        
-        // Получаем месяц и год для выбора
-        int targetMonth = date.getMonthValue();
-        int targetYear = date.getYear();
-        int targetDay = date.getDayOfMonth();
-        
-        // Кликаем по полю даты чтобы открыть календарь
-        dateField.click();
-        
-        // Ждём пока календарь откроется
-        $(".calendar").shouldBe(visible, Duration.ofSeconds(5));
-        
-        // Получаем текущий месяц и год в календаре
-        String currentMonthYear = $(".calendar__title").getText();
-        
-        // Навигация к нужному месяцу (если нужно)
-        while (true) {
-            String[] parts = currentMonthYear.split(" ");
-            String monthName = parts[0];
-            int year = Integer.parseInt(parts[1]);
-            
-            // Проверяем, совпадает ли текущий месяц и год с целевыми
-            if (year == targetYear && getMonthNumber(monthName) == targetMonth) {
-                break;
-            }
-            
-            // Если целевой месяц позже текущего - листаем вперёд
-            if (year < targetYear || (year == targetYear && getMonthNumber(monthName) < targetMonth)) {
-                $("[data-test-id='date'] .calendar__next").click();
-            } else {
-                $("[data-test-id='date'] .calendar__prev").click();
-            }
-            sleep(200);
-            currentMonthYear = $(".calendar__title").getText();
-        }
-        
-        // Выбираем нужный день
-        $$(".calendar__day").findBy(text(String.valueOf(targetDay))).click();
         sleep(300);
-    }
-    
-    private int getMonthNumber(String monthName) {
-        switch (monthName) {
-            case "Январь": return 1;
-            case "Февраль": return 2;
-            case "Март": return 3;
-            case "Апрель": return 4;
-            case "Май": return 5;
-            case "Июнь": return 6;
-            case "Июль": return 7;
-            case "Август": return 8;
-            case "Сентябрь": return 9;
-            case "Октябрь": return 10;
-            case "Ноябрь": return 11;
-            case "Декабрь": return 12;
-            default: return 0;
-        }
+        
+        // Очищаем поле
+        dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        sleep(200);
+        
+        // Вводим дату
+        dateField.setValue(date);
+        sleep(200);
+        
+        // Нажимаем Enter для подтверждения
+        dateField.sendKeys(Keys.ENTER);
+        sleep(500);
+        
+        // Закрываем календарь если он открыт
+        $("body").click();
+        sleep(300);
     }
 
     @Test
@@ -125,8 +84,8 @@ public class DeliveryTest {
         // Город
         fillCity(city);
         
-        // Дата через календарь
-        fillDateViaCalendar(deliveryLocalDate);
+        // Дата
+        fillDate(deliveryDate);
         
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
@@ -167,10 +126,10 @@ public class DeliveryTest {
         cityField.setValue("InvalidCity");
         cityField.sendKeys(Keys.ENTER);
         $("body").click();
-        sleep(300);
+        sleep(500);
         
-        // Дата через календарь
-        fillDateViaCalendar(deliveryLocalDate);
+        // Дата
+        fillDate(deliveryDate);
         
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
@@ -203,8 +162,8 @@ public class DeliveryTest {
         // Город
         fillCity(city);
         
-        // Дата через календарь
-        fillDateViaCalendar(deliveryLocalDate);
+        // Дата
+        fillDate(deliveryDate);
         
         // Невалидное имя (латиница)
         SelenideElement nameField = $("[data-test-id='name'] input");
@@ -243,7 +202,7 @@ public class DeliveryTest {
         dateField.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         dateField.setValue("");
         $("body").click();
-        sleep(300);
+        sleep(500);
         
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
@@ -275,12 +234,13 @@ public class DeliveryTest {
     void shouldShowValidationErrorForPastDate() {
         // Дата в прошлом
         LocalDate pastDate = LocalDate.now().minusDays(1);
+        String pastDateString = pastDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         
         // Город
         fillCity(city);
         
-        // Дата в прошлом через календарь
-        fillDateViaCalendar(pastDate);
+        // Дата в прошлом
+        fillDate(pastDateString);
         
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
@@ -318,8 +278,9 @@ public class DeliveryTest {
         return cities[faker.number().numberBetween(0, cities.length)];
     }
 
-    private LocalDate generateDeliveryDate() {
+    private String generateDeliveryDate() {
         LocalDate currentDate = LocalDate.now();
-        return currentDate.plusDays(faker.number().numberBetween(3, 30));
+        LocalDate deliveryDate = currentDate.plusDays(faker.number().numberBetween(3, 30));
+        return deliveryDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 }
