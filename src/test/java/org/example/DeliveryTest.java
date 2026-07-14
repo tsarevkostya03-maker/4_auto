@@ -47,7 +47,7 @@ public class DeliveryTest {
         cityField.setValue(cityName);
         cityField.sendKeys(Keys.ENTER);
         
-        // Ждём появления выпадающего списка и выбираем первый вариант
+        // Ждём появления выпадающего списка
         $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
         $(".menu-item").click();
         
@@ -77,10 +77,16 @@ public class DeliveryTest {
         // Закрываем календарь если он открыт
         $("body").click();
         sleep(300);
+        
+        // Проверяем, что дата установилась
+        String currentValue = dateField.getValue();
+        System.out.println("Current date value: " + currentValue);
     }
 
     @Test
     void shouldSubmitDeliveryForm() {
+        System.out.println("Test date: " + deliveryDate);
+        
         // Город
         fillCity(city);
         
