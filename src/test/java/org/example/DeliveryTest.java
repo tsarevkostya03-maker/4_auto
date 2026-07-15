@@ -1,5 +1,6 @@
 package org.example;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,10 @@ public class DeliveryTest {
 
     @BeforeEach
     void setUp() {
+        // Только необходимые настройки для запуска браузера
+        Configuration.browser = "firefox";
+        Configuration.headless = true;
+
         open("http://localhost:9999");
 
         $("[data-test-id='city']").shouldBe(visible, Duration.ofSeconds(10));
