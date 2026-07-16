@@ -24,9 +24,7 @@ public class DeliveryTest {
 
     @BeforeEach
     void setUp() {
-        // Только необходимые настройки для запуска браузера
         Configuration.browser = "firefox";
-        Configuration.headless = true;
 
         open("http://localhost:9999");
 
