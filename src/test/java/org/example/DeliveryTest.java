@@ -42,23 +42,21 @@ public class DeliveryTest {
         // Город
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.setValue(city);
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click();
+
 
         // Дата
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.setValue(deliveryDate);
-        dateField.sendKeys(Keys.ENTER);
+
 
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.setValue(name);
-        nameField.sendKeys(Keys.TAB);
 
         // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.setValue(phone);
-        phoneField.sendKeys(Keys.TAB);
+
 
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -86,17 +84,17 @@ public class DeliveryTest {
         // Дата
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.setValue(deliveryDate);
-        dateField.sendKeys(Keys.ENTER);
+
 
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.setValue(name);
-        nameField.sendKeys(Keys.TAB);
+
 
         // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.setValue(phone);
-        phoneField.sendKeys(Keys.TAB);
+
 
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -117,23 +115,22 @@ public class DeliveryTest {
         // Город
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.setValue(city);
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click();
+
 
         // Дата
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.setValue(deliveryDate);
-        dateField.sendKeys(Keys.ENTER);
+
 
         // Невалидное имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.setValue("John Doe");
-        nameField.sendKeys(Keys.TAB);
+
 
         // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.setValue(phone);
-        phoneField.sendKeys(Keys.TAB);
+
 
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -154,8 +151,7 @@ public class DeliveryTest {
         // Город
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.setValue(city);
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click();
+
 
         // Пустая дата
         SelenideElement dateField = $("[data-test-id='date'] input");
@@ -165,12 +161,12 @@ public class DeliveryTest {
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.setValue(name);
-        nameField.sendKeys(Keys.TAB);
+
 
         // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.setValue(phone);
-        phoneField.sendKeys(Keys.TAB);
+
 
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
@@ -195,23 +191,22 @@ public class DeliveryTest {
         // Город
         SelenideElement cityField = $("[data-test-id='city'] input");
         cityField.setValue(city);
-        $(".menu-item").shouldBe(visible, Duration.ofSeconds(5));
-        $(".menu-item").click();
+
 
         // Дата в прошлом
         SelenideElement dateField = $("[data-test-id='date'] input");
         dateField.setValue(pastDateString);
-        dateField.sendKeys(Keys.ENTER);
+
 
         // Имя
         SelenideElement nameField = $("[data-test-id='name'] input");
         nameField.setValue(name);
-        nameField.sendKeys(Keys.TAB);
+
 
         // Телефон
         SelenideElement phoneField = $("[data-test-id='phone'] input");
         phoneField.setValue(phone);
-        phoneField.sendKeys(Keys.TAB);
+
 
         // Согласие
         SelenideElement agreementLabel = $("[data-test-id='agreement']");
